@@ -33,8 +33,25 @@ s: string
 returns: string
 */
 char *reverse_string(char *s) {
-    //TODO: Fill this in.
-    return "";
+    int len = strlen(s);
+    // Duplicates the string
+    char* rev = strdup(s);
+
+    // Creates one variable that iterates through the string forwards from the
+    // beginning and one variable that iterates through the string backwards
+    // from the end, and swaps letters at analagous positions
+    int start = 0;
+    int end = len-1;
+    while (start < end) {
+      char temp = rev[start];
+      rev[start] = rev[end];
+      rev[end] = temp;
+
+      start++;
+      end--;
+    }
+
+    return rev;
 }
 
 /* ctoi: Converts a character to integer.
@@ -53,14 +70,22 @@ i: integer 0 to 9
 returns: character '0' to '9'
 */
 char itoc(int i) {
-    //TODO: Fill this in, with an appropriate assertion.
-    return '0';
+  switch(i) {
+    case 0: return '0';
+    case 1: return '1';
+    case 2: return '2';
+    case 3: return '3';
+    case 4: return '4';
+    case 5: return '5';
+    case 6: return '6';
+    case 7: return '7';
+    case 8: return '8';
+    case 9: return '9';
+    default: return 'o';
+  }
 }
 
-/* add_digits: Adds two decimal digits, returns the total and carry.
-
-For example, if a='5', b='6', and carry='1', the sum is 12, so
-the output value of total should be '2' and carry should be '1'
+/* add_digits: Adds three decimal digits, returns the total and carry.
 
 a: character '0' to '9'
 b: character '0' to '9'
@@ -70,7 +95,18 @@ carry: pointer to char
 
 */
 void add_digits(char a, char b, char c, char *total, char *carry) {
-    //TODO: Fill this in.
+    // Calculates the sum
+    int i_a = ctoi(a);
+    int i_b = ctoi(b);
+    int i_c = ctoi(c);
+    int sum = i_a+i_b+i_c;
+
+    // Finds the digit that should be in the 1's place using the modulo operator
+    // and converts it to a character
+    *total = itoc(sum%10);
+    // Finds the digit that should be in the 2's place by dividing by 10 and
+    // coverts it to a character
+    *carry = itoc(sum/10);
 }
 
 /* Define a type to represent a BigInt.
@@ -203,8 +239,6 @@ int main (int argc, char *argv[])
     test_itoc();
     test_add_digits();
 
-    //TODO: When you have the first three functions working,
-    //      uncomment the following, and it should work.
-    // test_add_bigint();
+    test_add_bigint();
     return 0;
 }
