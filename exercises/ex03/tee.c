@@ -1,3 +1,10 @@
+/*
+This file contains my solution to HW03 for the Software Systems class at Olin.
+This file is my implementation of `tee`.
+
+Author: Shreya Chowdhary
+*/
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
