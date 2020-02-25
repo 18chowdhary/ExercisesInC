@@ -3,6 +3,22 @@ This file contains my solution to HW03 for the Software Systems class at Olin.
 This file is my implementation of `tee`.
 
 Author: Shreya Chowdhary
+
+Answers to questions:
+
+3. I tried to develop incrementally, starting with implementing just the case
+for writing and then adding the case for appending. This worked well because I
+caught errors earlier and faster. In the future, though, I would try to plan my
+implementation ahead of time rather than just jumping into it.
+
+4. The professional code has much more error handling, especially for if
+there's issues working with any of the files. For example, before reading in
+any user input, the professional code tries to check if there are any issues
+opening any of the files and presumably saves the open files somewhere (I
+think? This is slightly unclear to me in the professional implementation).
+Additionally, the professional code checks to make sure all the operations
+were successful (like write and close by checking for an error code) and prints
+error messages if they were not.
 */
 
 #include <stdio.h>
