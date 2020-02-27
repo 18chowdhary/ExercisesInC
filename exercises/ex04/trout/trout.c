@@ -1,4 +1,4 @@
-#include "trout.h"
+#include "util.h"
 #include <unistd.h>
 
 /* variables we might want to configure */

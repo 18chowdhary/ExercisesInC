@@ -1,4 +1,4 @@
-#include "trout.h"
+#include "util.h"
 #include <stdlib.h>
 
 int main (int argc, char **argv)
