@@ -78,8 +78,42 @@ float my_random_float2()
 // compute a random double using my algorithm
 double my_random_double()
 {
-    float random_float = my_random_float();
-    return (double) random_float;
+  // ints are only 32 bits, but a double is 64, so we need more bits
+  long x, mant;
+  double d;
+  long exp = 1022;
+  int mask = 1;
+
+  // this union is for assembling the double
+  union {
+      long i;
+      double d;
+  } b;
+
+  while (1) {
+    // Generating the bits
+    x = random();
+    // random only generates 32 bits, so call it twice and use bitwise-OR to combine
+    x = (x << 32) | random();
+    // Subtracting bias
+    if (x == 0) {
+      exp -= 63;
+    } else {
+      break;
+    }
+  }
+
+  // Create mask bit by bit
+  while (x & mask) {
+    mask <<= 1;
+    exp--;
+  }
+
+  // Shift fraction part over
+  mant = x >> 11;
+  // Moving the exponent over to its correct place and tacking mant part onto the end
+  b.i = (exp << 52) | mant;
+  return b.d;
 }
 
 // return a constant (this is a dummy function for time trials)
