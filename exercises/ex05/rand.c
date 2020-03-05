@@ -78,7 +78,8 @@ float my_random_float2()
 // compute a random double using my algorithm
 double my_random_double()
 {
-    // TODO: fill this in
+    float random_float = my_random_float();
+    return (double) random_float;
 }
 
 // return a constant (this is a dummy function for time trials)
