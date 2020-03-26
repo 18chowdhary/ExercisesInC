@@ -54,8 +54,15 @@ void print_list(Node **list) {
 * returns: int or -1 if the list is empty
 */
 int pop(Node **list) {
-    // FILL THIS IN!
-    return 0;
+    // Get the pointer to the current head
+    Node* head = *list;
+    // If there is a head
+    if (head) {
+      // Move the head_ptr to te next node and update the list
+      *list = head->next;
+      return head->val;
+    }
+    return -1;
 }
 
 
@@ -65,7 +72,9 @@ int pop(Node **list) {
 * val: value to add
 */
 void push(Node **list, int val) {
-    // FILL THIS IN!
+    Node* head = *list;
+    Node* new = make_node(val, head);
+    *list = new;
 }
 
 
@@ -79,7 +88,18 @@ void push(Node **list, int val) {
 * returns: number of nodes removed
 */
 int remove_by_value(Node **list, int val) {
-    // FILL THIS IN!
+    Node* current = *list;
+    Node* prev = *list;
+    while (current && current->val != val) {
+      prev = current;
+      current = current->next;
+    }
+    if (current) {
+      Node* old_next = current->next;
+      prev->next = old_next;
+      free(current);
+      return 1;
+    }
     return 0;
 }
 
@@ -91,7 +111,16 @@ int remove_by_value(Node **list, int val) {
 * list: pointer to pointer to Node
 */
 void reverse(Node **list) {
-    // FILL THIS IN!
+  Node* current = *list;
+  Node* prev = NULL;
+  Node* next = NULL;
+  while (current) {
+    next = current->next;
+    current->next = prev;
+    prev = current;
+    current = next;
+  }
+  *list = prev;
 }
 
 
@@ -101,21 +130,27 @@ int main() {
     head->next->next = make_node(3, NULL);
     head->next->next->next = make_node(4, NULL);
 
+    printf("Testing initialization\n");
     Node **list = &head;
     print_list(list);
 
+    printf("Testing pop\n");
     int retval = pop(list);
     print_list(list);
 
+    printf("Testing push\n");
     push(list, retval+10);
     print_list(list);
 
+    printf("Testing remove by value that exists\n");
     remove_by_value(list, 3);
     print_list(list);
 
+    printf("Testing remove by value that does not exist\n");
     remove_by_value(list, 7);
     print_list(list);
-
+    
+    printf("Testing reverse\n");
     reverse(list);
     print_list(list);
 }
