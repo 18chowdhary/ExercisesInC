@@ -8,7 +8,7 @@ License: Creative Commons Attribution-ShareAlike 3.0
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-
+#include <math.h>
 
 // VALUE: represents a value in a key-value pair
 
@@ -178,7 +178,11 @@ int hash_hashable(Hashable *hashable)
 */
 int equal_int (void *ip, void *jp)
 {
-    // FILL THIS IN!
+    int i = *(int*)ip;
+    int j = *(int*)jp;
+    if (i==j) {
+      return 1;
+    }
     return 0;
 }
 
@@ -192,7 +196,11 @@ int equal_int (void *ip, void *jp)
 */
 int equal_string (void *s1, void *s2)
 {
-    // FILL THIS IN!
+    char* string1 = (char*)s1;
+    char* string2 = (char*)s2;
+    if (strcmp(string1, string2) == 0) {
+      return 1;
+    }
     return 0;
 }
 
@@ -207,8 +215,7 @@ int equal_string (void *s1, void *s2)
 */
 int equal_hashable(Hashable *h1, Hashable *h2)
 {
-    // FILL THIS IN!
-    return 0;
+    return h1->equal(h1->key, h2->key);
 }
 
 
@@ -296,7 +303,13 @@ Node *prepend(Hashable *key, Value *value, Node *rest)
 /* Looks up a key and returns the corresponding value, or NULL */
 Value *list_lookup(Node *list, Hashable *key)
 {
-    // FILL THIS IN!
+    Node* current = list;
+    while (current != NULL) {
+      if (equal_hashable(current->key, key)) {
+        return current->value;
+      }
+      current = current->next;
+    }
     return NULL;
 }
 
@@ -341,15 +354,25 @@ void print_map(Map *map)
 /* Adds a key-value pair to a map. */
 void map_add(Map *map, Hashable *key, Value *value)
 {
-    // FILL THIS IN!
+  int index = abs(hash_hashable(key)) % map->n;
+  Node* key_list = map->lists[index];
+  Node* new_list = malloc(sizeof(Node*));
+  if (key_list != NULL) {
+    new_list = prepend(key, value, key_list);
+  }
+  else {
+    new_list = prepend(key, value, NULL);
+  }
+  map->lists[index] = new_list;
 }
 
 
 /* Looks up a key and returns the corresponding value, or NULL. */
 Value *map_lookup(Map *map, Hashable *key)
 {
-    // FILL THIS IN!
-    return NULL;
+    int index = abs(hash_hashable(key)) % map->n;
+    Node* key_list = map->lists[index];
+    return list_lookup(key_list, key);
 }
 
 
@@ -394,7 +417,7 @@ int main ()
 
     printf ("Map\n");
     print_map(map);
-
+    //
     // run some test lookups
     value = map_lookup(map, hashable1);
     print_lookup(value);
